@@ -1,0 +1,28 @@
+{
+  "name": "js-select",
+  "version": "1.0.0",
+  "description": "An advanced select control",
+  "main": "./dist/js/JSSelect.js",
+  "directories": {
+    "doc": "docs",
+    "example": "examples",
+    "test": "test"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jama95/JSSelect.git"
+  },
+  "keywords": [
+    "select control",
+    "custom control"
+  ],
+  "author": "Jordi Miño <joralmiga@hotmail.com> (https://github.com/jama95)",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/jama95/JSSelect/issues"
+  },
+  "homepage": "https://github.com/jama95/JSSelect#readme"
+}
