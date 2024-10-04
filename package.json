@@ -2,27 +2,65 @@
   "name": "js-select",
   "version": "1.0.0",
   "description": "An advanced select control",
+  "homepage": "",
+  "author": "Jordi Miño <joralmiga@hotmail.com> (https://github.com/jama95)",
+  "keywords": [
+    "select control",
+    "custom control",
+    "custom select"
+  ],
   "main": "./dist/js/JSSelect.js",
+  "typings": "./dist/js/JSSelect.d.ts",
+  "engines": {
+    "node": "*"
+  },
+  "browserslist": "> 0.5%, last 2 versions, Firefox ESR, not dead",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/jama95/JSSelect.git"
+  },
+  "bugs": {
+    "url": "https://github.com/jama95/JSSelect/issues"
+  },
+  "scripts": {
+    "dev": "NODE_ENV=development gulp dev",
+    "build": "NODE_ENV=production gulp",
+    "css": "gulp css",
+    "js": "gulp js",
+    "types": "tsc"
+  },
   "directories": {
     "doc": "docs",
     "example": "examples",
     "test": "test"
   },
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/jama95/JSSelect.git"
-  },
-  "keywords": [
-    "select control",
-    "custom control"
-  ],
-  "author": "Jordi Miño <joralmiga@hotmail.com> (https://github.com/jama95)",
   "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/jama95/JSSelect/issues"
-  },
-  "homepage": "https://github.com/jama95/JSSelect#readme"
+  "devDependencies": {
+    "@babel/core": "^7.25.7",
+    "@babel/plugin-transform-modules-umd": "^7.25.7",
+    "@babel/preset-env": "^7.25.7",
+    "@babel/preset-typescript": "^7.25.7",
+    "@typescript-eslint/eslint-plugin": "^8.8.0",
+    "@typescript-eslint/parser": "^8.8.0",
+    "autoprefixer": "^10.4.20",
+    "browser-sync": "^3.0.3",
+    "bs-html-injector": "^3.0.3",
+    "cssnano": "^7.0.6",
+    "eslint": "^9.11.1",
+    "gulp": "^5.0.0",
+    "gulp-babel": "^8.0.0",
+    "gulp-concat-process": "^1.0.1",
+    "gulp-modifier": "^1.0.1",
+    "gulp-postcss": "^10.0.0",
+    "gulp-rename": "^2.0.0",
+    "gulp-sass": "^5.1.0",
+    "gulp-sourcemaps": "^3.0.0",
+    "gulp-uglify": "^3.0.2",
+    "postcss": "^8.4.47",
+    "postcss-load-config": "^6.0.1",
+    "postcss-normalize": "^13.0.1",
+    "postcss-preset-env": "^10.0.5",
+    "sass": "^1.79.4",
+    "typescript": "^5.6.2"
+  }
 }
