@@ -71,10 +71,12 @@ function buildLocales() {
     .src("./src/ts/lang/*.ts")
     .pipe(
       gulpModifier(function (contents, path) {
-        let newContents = contents.replace(
-          /import (type )?{([0-9a-z_, \n])+} from "[0-9a-z_./]+";/gi,
-          ""
-        );
+        let newContents = contents
+          .replace(
+            /import (type )?{([0-9a-z_, \n])+} from "[0-9a-z_./]+";/gi,
+            ""
+          )
+          .replace(/export /g, "");
         return newContents.trim();
       })
     )
@@ -147,6 +149,7 @@ function server(done) {
     files: [
       "./site/index.html",
       "./site/index.js",
+      "./site/data.json",
       "./dist/css/JSSelect.css",
       "./dist/js/JSSelect.js",
     ],
