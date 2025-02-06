@@ -4,16 +4,45 @@
   <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>JS Select</title>
-    <link rel="stylesheet" type="text/css" href="css/JSSelect.css">
+    <title>Document</title>
+    <link rel="stylesheet" href="/css/JSSelect.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
   </head>
 
-  <body>
+  <body data-bs-theme="light">
 
-    <script src="js/JSSelect.js" type="text/javascript"></script>
-    <script src="js/lang/es.js" type="text/javascript"></script>
-    <script src="index.js" type="text/javascript"></script>
+    <form>
+      <br>
+      <input type="checkbox" name="d" id="d"> Bootstrap dark mode
+      <input type="checkbox" name="d2" id="d2"> Select dark mode
+      <div id="dm" data-bs-theme="light">
+        Default Select <br>
+        <select name="a" id="a" title="select" class="form-control" placeholder="select one" multiple>
+          <optgroup label="Even">
+            <option value="2">2</option>
+            <option value="4">4</option>
+            <option value="6">6</option>
+          </optgroup>
+          <optgroup label="Odd">
+            <option value="1">1</option>
+            <option value="3">3</option>
+            <option value="5">5</option>
+          </optgroup>
+          <option value="a">a</option>
+          <option value="b">b</option>
+          <option value="c">c</option>
+        </select>
+      </div>
+      <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+      <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+      <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+      <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+    </form>
+    <p id="co"></p>
+    <script src="/js/JSSelect.js"></script>
+    <script src="/js/lang/countries.js"></script>
+    <script src="/js/lang/es_EC.js"></script>
+    <script src="index.js"></script>
   </body>
 
 </html>
