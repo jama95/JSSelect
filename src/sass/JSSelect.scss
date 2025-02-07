@@ -229,12 +229,25 @@ div.js-select_container {
       }
     }
 
+    >div.js-select_search_container+div.js-select_options_container+div.js-select_info {
+      position: absolute;
+      margin: 0 5px 2px 5px;
+      line-height: 1;
+      font-weight: 100;
+      font-size: small;
+      height: fit-content;
+      width: fit-content;
+      background-color: inherit;
+    }
+
     &:not(.loading)>div.js-select_search_container+div.js-select_options_container+div.js-select_loading {
       display: none;
     }
 
     &.loading {
-      >div.js-select_search_container+div.js-select_options_container {
+
+      >div.js-select_search_container+div.js-select_options_container,
+      >div.js-select_search_container+div.js-select_options_container+div.js-select_info {
         display: none;
       }
 

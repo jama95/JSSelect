@@ -2,6 +2,8 @@ import type { Lang, Options, Configuration } from "./types";
 
 export const options: Options = {
   multiple: false,
+  showInfo: true,
+  showInfoPosition: "bottom right",
   data: undefined,
   fetch: undefined,
   fromCountries: undefined,
@@ -30,6 +32,7 @@ export const language: Lang = {
   noResults: "No coincidences for {search}.",
   loading: "Loading",
   noGroup: "No Group",
+  info: "Options:{o}(&nbsp;&nbsp;Groups:{g})",
 };
 
 export const configuration: Configuration = {

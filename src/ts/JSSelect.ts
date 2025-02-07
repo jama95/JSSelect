@@ -7,7 +7,7 @@ import type {
 } from "./types";
 
 import { configuration, language, options } from "./config";
-import { customSelect, setOptions } from "./dom";
+import { customSelect, setInfoPosition, setOptions } from "./dom";
 
 /**
  * JSSelect class definition.
@@ -60,7 +60,7 @@ class Select {
       const selected = Array.from(select.selectedOptions);
       const options =
         select.querySelectorAll<HTMLOptionElement>("option[selected]");
-      if (selected.length == 1) {
+      if (selected.length == 1 && select.multiple) {
         Array.from(options).forEach((item) => {
           if (item != selected[0]) {
             const clear = this.custom?.value.querySelector<HTMLDivElement>(
@@ -78,10 +78,11 @@ class Select {
         if (!values.includes(item.value)) opts.push(item.value);
       });
       opts.forEach((v) => {
-        const option = this.custom?.options_container.querySelector(
-          `.js-select_option[value="${v}"]`
-        ) as HTMLDivElement;
-        option.click();
+        const option =
+          this.custom?.options_container.querySelector<HTMLDivElement>(
+            `.js-select_option[value="${v}"]`
+          );
+        if (option) option.click();
       });
     });
   }
@@ -99,11 +100,12 @@ class Select {
     target.selectedIndex = -1;
     const custom = customSelect(target, this.config, this.options);
     setOptions(target, custom, this.config, this.options);
-    custom.dropdown.append(custom.search_container, custom.options_container);
-    const loading = document.createElement("div");
-    loading.classList.add("js-select_loading");
-    loading.setAttribute("data-loading", this.config.language.loading);
-    custom.dropdown.append(loading);
+    custom.dropdown.append(
+      custom.search_container,
+      custom.options_container,
+      custom.info,
+      custom.loading
+    );
     custom.container.append(custom.select, custom.clear, custom.dropdown);
     target.insertAdjacentElement("afterend", custom.container);
     this.custom = custom;
@@ -131,6 +133,7 @@ class Select {
     this.custom.clear.style.right = window.getComputedStyle(
       this.custom.select
     ).paddingRight;
+    if (this.options.showInfo) setInfoPosition(this.custom, this.options);
   }
 
   /**
@@ -158,8 +161,12 @@ class Select {
   }
 
   /**
-   * Clear all the selected options.
+   * Clear all or the specified selected option.
    * @param {?number} [index] Index of the selected option.
+
+   * NOTE:
+   * * The index value is ignored if the select is not set as multiple.
+   * * If the select is set as multiple and index is not specified, clear all the options.
    */
   clear(index?: number): void {
     if (this.custom)
@@ -178,6 +185,14 @@ class Select {
             `JSSelect: Failed to clear the option, the index "${index}" is invalid.`
           );
         }
+      } else {
+        const pills = this.custom.value.children;
+        Array.from(pills).forEach((p) => {
+          const clear = p.querySelector(
+            ".js-select_pill_remove"
+          ) as HTMLDivElement;
+          clear.click();
+        });
       }
   }
 

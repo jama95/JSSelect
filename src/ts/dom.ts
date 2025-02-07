@@ -6,7 +6,12 @@ import {
   OPTGroupList,
   CustomSelect,
 } from "./types";
-import { getOptionList, isCustomOptionsList, search } from "./utils";
+import {
+  getOptionList,
+  isCustomOptionsList,
+  reduceOptions,
+  search,
+} from "./utils";
 
 /**
  * Create a JSSelect.
@@ -20,9 +25,8 @@ export function customSelect(
   config: Configuration,
   options: Options
 ): CustomSelect {
-  let custom = structure(target, config, options);
-  custom = customSelectEvents(target, custom, config, options);
-  return custom;
+  const custom = structure(target, config, options);
+  return customSelectEvents(target, custom, config, options);
 }
 
 /**
@@ -83,6 +87,11 @@ function structure(
     );
   options_container.classList.add("js-select_options_container");
   options_container.setAttribute("current_focus", "-1");
+  const info = document.createElement("div");
+  info.classList.add("js-select_info");
+  const loading = document.createElement("div");
+  loading.classList.add("js-select_loading");
+  loading.setAttribute("data-loading", config.language.loading);
   return {
     container: container,
     select: select,
@@ -93,6 +102,8 @@ function structure(
     input: input,
     label: label,
     options_container: options_container,
+    info: info,
+    loading: loading,
   };
 }
 
@@ -172,13 +183,14 @@ function customSelectEvents(
     if (e.key == "Enter") e.preventDefault();
   };
   custom.input.onkeyup = function (e) {
+    custom.options_container.innerHTML = "";
     if (custom.input.value.trim().length == 0) {
-      custom.options_container.append(
-        fillOptions(target, custom, config.optionList, config, options)
-      );
+      if (options.fetch?.initialCount && options.fetch?.initialCount > 0)
+        custom.options_container.append(
+          fillOptions(target, custom, config.optionList, config, options)
+        );
       return;
     }
-    custom.options_container.innerHTML = "";
     custom.dropdown.classList.add("loading");
     const list = search(custom.input.value, config.optionList, options);
     list.then((l) => {
@@ -209,6 +221,8 @@ function customSelectEvents(
     input: custom.input,
     label: custom.label,
     options_container: custom.options_container,
+    info: custom.info,
+    loading: custom.loading,
   };
 }
 
@@ -282,6 +296,17 @@ export function fillOptions(
       ? config.language.fetch
       : config.language.empty;
     custom.options_container.setAttribute("current_focus", "-1");
+  }
+  if (options.showInfo) {
+    let info = config.language.info;
+    info = info.replace("{o}", list.options.toString());
+    if (list.groups > 0)
+      info = info
+        .replace("{g}", list.groups.toString())
+        .replace("(", "")
+        .replace(")", "");
+    else info = info.replace(/\(*\)/, "");
+    custom.info.innerHTML = info;
   }
   return fragment;
 }
@@ -554,7 +579,10 @@ export function setOptions(
 ): void {
   const ol = getOptionList(target, options);
   ol.then((value) => {
-    if (isCustomOptionsList(value)) config.optionList = value;
+    let list = value;
+    if (options.fetch?.initialCount && options.fetch?.initialCount > 0)
+      list = reduceOptions(list, options.fetch.initialCount);
+    if (isCustomOptionsList(list)) config.optionList = list;
     const opts = fillOptions(
       target,
       custom,
@@ -566,4 +594,52 @@ export function setOptions(
     custom.dropdown.classList.remove("loading");
     custom.options_container.append(opts);
   });
+}
+
+/**
+ * Sets the position of the info message if is present.
+ * @param {CustomSelect} custom  The JSSelect object.
+ * @param {Options} options The JSSelect options.
+ */
+export function setInfoPosition(custom: CustomSelect, options: Options): void {
+  options.showInfoPosition = options.showInfoPosition || "bottom right";
+  const pos = options.showInfoPosition.split(" ").map((p) => p.toLowerCase());
+  if (pos[0] == pos[1]) {
+    pos[0] = "bottom";
+    pos[1] = "right";
+  }
+  switch (pos[0]) {
+    case "left":
+      custom.info.style.left = "0";
+      break;
+    case "right":
+      custom.info.style.right = "0";
+      break;
+    case "top":
+      custom.info.style.top = `calc(${
+        window.getComputedStyle(custom.search_container).width
+      } + 1px)`;
+      break;
+    case "bottom":
+    default:
+      custom.info.style.bottom = "0";
+      break;
+  }
+  switch (pos[1]) {
+    case "top":
+      custom.info.style.top = `calc(${
+        window.getComputedStyle(custom.search_container).width
+      } + 1px)`;
+      break;
+    case "bottom":
+      custom.info.style.bottom = "0";
+      break;
+    case "right":
+      custom.info.style.right = "0";
+      break;
+    case "left":
+    default:
+      custom.info.style.left = "0";
+      break;
+  }
 }

@@ -1,11 +1,15 @@
 export type Options = {
   /* Signature symbol */
   [key: string]: unknown;
-  /** Set if is a multiple select @default undefined */
+  /** Sets if is a multiple select @default undefined */
   multiple: boolean | undefined;
+  /** Sets if shows info about options list @default true */
+  showInfo: boolean;
+  /** Sets the position of the info (top or bottom, left or right) @default 'bottom right' */
+  showInfoPosition: string;
   /** Sets the local options list @default undefined */
   data: CustomOptionsList | undefined;
-  /** Fetch external options list */
+  /** To fetch external options list */
   fetch:
     | {
         /** URL */
@@ -13,6 +17,8 @@ export type Options = {
         /** An object with data to send in the fetch request
          * (always overrides the body of the init property) @default {}*/
         body: any;
+        /** The initial number of options to show @default 0 */
+        initialCount: number;
         /** Additional options of the fetch function (method, headers, ...)*/
         init?: RequestInit;
       }
@@ -36,7 +42,7 @@ export type Options = {
   optionsClass: string;
   /** Additional class for the tittle of the options group @default '' */
   optionsGroupClass: string;
-  /** Show the options if the select is hover @default false */
+  /** Shows the options if the select is hover @default false */
   openListOnHover: boolean;
   /** Color of the focused option for dark mode @default '#52525e' */
   activeOptionColorDark: string;
@@ -80,8 +86,10 @@ export type Lang = {
   noResults: string;
   /** Default loading message */
   loading: string;
-  /** Empty group name */
+  /** Default empty group name */
   noGroup: string;
+  /** Default info message */
+  info: string;
 };
 
 export type iso3166 = {
@@ -150,6 +158,10 @@ export type CustomSelect = {
   label: HTMLLabelElement;
   /** The container of the options groups and/or options */
   options_container: HTMLDivElement;
+  /** The info message container */
+  info: HTMLDivElement;
+  /** The loading data element */
+  loading: HTMLDivElement;
 };
 
 export type GroupAddedCallback = (

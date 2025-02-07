@@ -8,7 +8,6 @@ import {
 } from "./types";
 
 import { world_en } from "./lang/countries";
-import { options } from "./config";
 
 /**
  * Gets the list of options for the JSSelect from the available source.
@@ -26,8 +25,12 @@ export async function getOptionList(
       console.error(`JSSelect: The data object has not a valid format.`);
       return { option_list: [], options: 0, groups: 0 };
     } else return options.data;
-  } else if (options.fetch?.input) return list;
-  else if (options.fromCountries)
+  } else if (options.fetch?.input) {
+    const ic = options.fetch.initialCount || 0;
+    const body = { ...(options.fetch.body ?? {}) };
+    if (ic > 0) return fetchData(options.fetch.input, body, options.fetch.init);
+    return list;
+  } else if (options.fromCountries)
     return fromCountries(
       options.fromCountries.countries,
       options.fromCountries.options
@@ -146,7 +149,7 @@ export async function fetchData(
   if (!init) init = {};
   init.body = { ...body };
   const method = init?.method && init.method == "POST";
-  if ((init?.body && Object.keys(init.body).length > 1) || method) {
+  if ((init.body && Object.keys(init.body).length > 1) || method) {
     init.method = "POST";
     init.body = JSON.stringify(init.body);
   } else {
@@ -277,4 +280,45 @@ export function fromCountries(
   list.groups = g;
   console.log(list);
   return list;
+}
+
+/**
+ * Reduce the total of options in the options list to the specified limit.
+ * @param {CustomOptionsList} list The options list.
+ * @param {number} limit The maximum number of options.
+ * @returns {CustomOptionsList} The reduced options list.
+ */
+export function reduceOptions(
+  list: CustomOptionsList,
+  limit: number
+): CustomOptionsList {
+  const r_list: CustomOptionsList = {
+    option_list: [],
+    options: limit,
+    groups: 0,
+  };
+  let g = 0,
+    max = limit;
+  for (let i = 0; i <= list.options; i++) {
+    if (max == 0) break;
+    const item = list.option_list[i];
+    const opt = item as OPTGroupList;
+    if (opt.title != undefined && opt.options != undefined) {
+      const gp: OPTGroupList = { title: opt.title, options: [] };
+      for (let j = 0; j <= opt.options.length; j++) {
+        if (max == 0) break;
+        const element = opt.options[j];
+        gp.options.push(element);
+        max--;
+      }
+      r_list.option_list.push(gp);
+      g++;
+    } else {
+      r_list.option_list.push(item);
+      max--;
+    }
+  }
+  r_list.options = limit;
+  r_list.groups = g;
+  return r_list;
 }

@@ -10,6 +10,7 @@ const es_ec: Lang = {
   noResults: "No hay coincidencias para {search}.",
   loading: "Cargando",
   noGroup: "Sin grupo",
+  info: "Opciones:{o}(&nbsp;&nbsp;Grupos:{g})",
 };
 
 const world_es: iso3166[] = [
