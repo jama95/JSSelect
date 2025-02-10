@@ -116,16 +116,31 @@ export function localSearch(
       const opt = item as OPTGroupList;
       const o = item as OptionList;
       if (opt.title) {
-        const p = opt.options.filter((option) => option.value.includes(value));
+        const p = opt.options.filter((option) => {
+          const o = option.value
+            .toLocaleLowerCase()
+            .includes(value.toLocaleLowerCase());
+          const t = option.text
+            .toLocaleLowerCase()
+            .replace(/<\/?[^>]+(>|$)/g, "")
+            .includes(value.toLocaleLowerCase());
+          if (o || t) return option;
+        });
         if (p.length > 0) {
           options = options + p.length;
           groups++;
           return { title: opt.title, options: p };
         }
       } else if (o.value) {
-        if (o.value.includes(value)) {
+        const p = o.value
+          .toLocaleLowerCase()
+          .includes(value.toLocaleLowerCase());
+        const t = o.text
+          .toLocaleLowerCase()
+          .replace(/<\/?[^>]+(>|$)/g, "")
+          .includes(value.toLocaleLowerCase());
+        if (p || t) {
           options++;
-          groups++;
           return item;
         }
       }
