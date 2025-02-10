@@ -185,7 +185,7 @@ function customSelectEvents(
   custom.input.onkeyup = function (e) {
     custom.options_container.innerHTML = "";
     if (custom.input.value.trim().length == 0) {
-      if (options.fetch?.initialCount && options.fetch?.initialCount > 0)
+      if (config.optionList.groups > 0)
         custom.options_container.append(
           fillOptions(target, custom, config.optionList, config, options)
         );
@@ -322,7 +322,7 @@ function singleValue(
   custom: CustomSelect,
   op: OptionList
 ): void {
-  custom.value.textContent = op.text;
+  custom.value.innerHTML = op.text;
   custom.container.setAttribute("value", op.value);
   custom.clear.style.display = "block";
   const previous = target.querySelector<HTMLOptionElement>(`option[selected]`);
