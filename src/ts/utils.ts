@@ -271,10 +271,15 @@ export function fromCountries(
     group = options.group;
   if (!group) {
     c_list.forEach((c) => {
-      if (options?.text && typeof options.text == "function")
-        list.option_list.push({ text: options.text(c), value: c[value] });
-      else list.option_list.push({ text: c[text], value: c[value] });
-      o++;
+      let r = true;
+      if (options?.condition && typeof options.condition == "function")
+        r = options.condition(c);
+      if (r) {
+        if (options?.text && typeof options.text == "function")
+          list.option_list.push({ text: options.text(c), value: c[value] });
+        else list.option_list.push({ text: c[text], value: c[value] });
+        o++;
+      }
     });
   } else {
     const gl = makeGroups(c_list, group);
@@ -282,10 +287,15 @@ export function fromCountries(
     name.forEach((n) => {
       const op: OptionList[] = [];
       gl[n].forEach((i) => {
-        if (options?.text && typeof options.text == "function")
-          op.push({ text: options.text(i), value: i[value] });
-        else op.push({ text: i[text], value: i[value] });
-        o++;
+        let r = true;
+        if (options?.condition && typeof options.condition == "function")
+          r = options.condition(i);
+        if (r) {
+          if (options?.text && typeof options.text == "function")
+            op.push({ text: options.text(i), value: i[value] });
+          else op.push({ text: i[text], value: i[value] });
+          o++;
+        }
       });
       list.option_list.push({ title: n, options: op });
       g++;
@@ -293,7 +303,6 @@ export function fromCountries(
   }
   list.options = o;
   list.groups = g;
-  console.log(list);
   return list;
 }
 

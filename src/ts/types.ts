@@ -238,4 +238,6 @@ export type countriesOptions = {
   text?: string | ((countries: iso3166) => string);
   /** Sets the name of the property to use its value as the returned value of the option  */
   value?: string;
+  /** Function to determine whether the country should be added */
+  condition?: (countries: iso3166) => boolean;
 };
