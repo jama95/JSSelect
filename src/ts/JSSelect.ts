@@ -228,6 +228,10 @@ class Select {
     }
   }
 
+  /**
+   *Search the specified value
+   * @param {string} value The value to search
+   */
   search(value: string): void {
     if (this.custom) {
       this.open();
@@ -236,12 +240,18 @@ class Select {
     }
   }
 
+  /**
+   * Opens the dropdown options list
+   */
   open(): void {
     if (this.custom)
       if (this.custom.container.classList.contains("open"))
         this.custom.select.click();
   }
 
+  /**
+   * Closes the dropdown options list
+   */
   close(): void {
     if (this.custom)
       if (this.custom.container.classList.contains("close"))
