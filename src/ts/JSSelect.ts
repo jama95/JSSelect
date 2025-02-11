@@ -227,6 +227,26 @@ class Select {
       );
     }
   }
+
+  search(value: string): void {
+    if (this.custom) {
+      this.open();
+      this.custom.input.value = value;
+      this.custom.input.dispatchEvent(new Event("keyup"));
+    }
+  }
+
+  open(): void {
+    if (this.custom)
+      if (this.custom.container.classList.contains("open"))
+        this.custom.select.click();
+  }
+
+  close(): void {
+    if (this.custom)
+      if (this.custom.container.classList.contains("close"))
+        this.custom.select.click();
+  }
 }
 
 /**
