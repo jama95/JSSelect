@@ -57,6 +57,8 @@ class Select {
    */
   private targetEvents(select: HTMLSelectElement) {
     select.addEventListener("change", () => {
+      if (this.custom?.container.hasAttribute("changing")) return;
+      select.setAttribute("changing", "changing");
       const selected = Array.from(select.selectedOptions);
       const options =
         select.querySelectorAll<HTMLOptionElement>("option[selected]");
@@ -162,6 +164,25 @@ class Select {
     if (this.custom) {
       this.custom.container.classList.remove("dark");
       this.custom.container.classList.remove("light");
+    }
+  }
+
+  /**
+   * Sets the initial theme
+   * @param {string} theme
+   */
+  initialTheme(theme: string): void {
+    switch (theme) {
+      case "light":
+        this.lightTheme();
+        break;
+      case "dark":
+        this.darkTheme();
+        break;
+      case "auto":
+      default:
+        this.autoTheme();
+        break;
     }
   }
 

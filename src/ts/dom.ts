@@ -124,8 +124,9 @@ function customSelectEvents(
   /** Close the JSSelect dropdown on blur */
   document.addEventListener("click", function (e) {
     const target = e.target as HTMLElement;
+    const classes = Array.from(target.classList).join(" ");
     if (
-      target.className.indexOf("js-select") < 0 &&
+      classes.indexOf("js-select") < 0 &&
       custom.container.classList.contains("close")
     ) {
       custom.container.classList.add("open");
@@ -171,6 +172,10 @@ function customSelectEvents(
     if (previous) previous.removeAttribute("selected");
     target.value = "";
     target.selectedIndex = -1;
+    if (!target.hasAttribute("changing")) {
+      custom.container.setAttribute("changing", "changing");
+      target.dispatchEvent(new Event("change"));
+    }
     if (options.ClearedCallback)
       options.ClearedCallback(custom, target, options);
   };
@@ -409,6 +414,10 @@ function clearValueMulti(
     target.selectedIndex = -1;
     target.value = "";
   }
+  if (!target.hasAttribute("changing")) {
+    custom.container.setAttribute("changing", "changing");
+    target.dispatchEvent(new Event("change"));
+  }
   if (options.optionClearedCallback)
     options.optionClearedCallback(option, custom, target, options);
 }
@@ -450,6 +459,10 @@ function optionClick(
       `JSSelect: Failed to select the option, the selected option is not exist in the target select "${target.id}".`
     );
     if (!options.multiple) custom.clear.click();
+  }
+  if (!target.hasAttribute("changing")) {
+    custom.container.setAttribute("changing", "changing");
+    target.dispatchEvent(new Event("change"));
   }
   triggerChangeEvents(custom, op, config);
 }
