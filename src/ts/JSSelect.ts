@@ -137,17 +137,32 @@ class Select {
   }
 
   /**
-   * Sets the dark mode styles.
+   * Sets the dark theme styles.
    */
-  darkMode(): void {
-    if (this.custom) this.custom.container.classList.add("dark");
+  darkTheme(): void {
+    if (this.custom) {
+      this.custom.container.classList.remove("light");
+      this.custom.container.classList.add("dark");
+    }
   }
 
   /**
-   * Sets the light mode styles.
+   * Sets the light theme styles.
    */
-  lightMode(): void {
-    if (this.custom) this.custom.container.classList.remove("dark");
+  lightTheme(): void {
+    if (this.custom) {
+      this.custom.container.classList.remove("dark");
+      this.custom.container.classList.add("light");
+    }
+  }
+  /**
+   * Sets the theme dark or light styles automatically.
+   */
+  autoTheme(): void {
+    if (this.custom) {
+      this.custom.container.classList.remove("dark");
+      this.custom.container.classList.remove("light");
+    }
   }
 
   /**
