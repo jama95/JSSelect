@@ -185,10 +185,9 @@ function customSelectEvents(
   custom.input.onkeyup = function (e) {
     custom.options_container.innerHTML = "";
     if (custom.input.value.trim().length == 0) {
-      if (config.optionList.groups > 0)
-        custom.options_container.append(
-          fillOptions(target, custom, config.optionList, config, options)
-        );
+      custom.options_container.append(
+        fillOptions(target, custom, config.optionList, config, options)
+      );
       return;
     }
     custom.dropdown.classList.add("loading");
@@ -305,7 +304,7 @@ export function fillOptions(
         .replace("{g}", list.groups.toString())
         .replace("(", "")
         .replace(")", "");
-    else info = info.replace(/\(*\)/, "");
+    else info = info.replace(/\([\s\S]*\)/, "");
     custom.info.innerHTML = info;
   }
   return fragment;
