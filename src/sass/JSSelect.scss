@@ -23,14 +23,14 @@ $placeholder-select-light: #57595c;
 :root {
   --min-width: #{$min-width};
   --width: #{$width};
-  --o-active-d: #{$option-active-dark};
-  --o-active: #{$option-active-light};
-  --s-disabled-d: #{$disabled-select-dark};
-  --s-disabled: #{$disabled-select-light};
-  --r-color-d: #{$readonly-select-dark};
-  --r-color: #{$readonly-select-light};
-  --p-color-d: #{$placeholder-select-dark};
-  --p-color: #{$placeholder-select-light};
+  --o-active-dark: #{$option-active-dark};
+  --o-active-light: #{$option-active-light};
+  --s-disabled-dark: #{$disabled-select-dark};
+  --s-disabled-light: #{$disabled-select-light};
+  --r-color-dark: #{$readonly-select-dark};
+  --r-color-light: #{$readonly-select-light};
+  --p-color-dark: #{$placeholder-select-dark};
+  --p-color-light: #{$placeholder-select-light};
 }
 
 form {
@@ -72,19 +72,19 @@ div.js-select_container {
   }
 
   &.readonly>div.js-select>div.js-select_value.empty::after {
-    color: var(--r-color);
+    color: var(--r-color-light);
   }
 
   &.disabled {
-    background-color: var(--s-disabled);
+    background-color: var(--s-disabled-light);
 
     &>div.js-select>div.js-select_value.empty::after {
-      color: var(--p-color);
+      color: var(--p-color-light);
     }
   }
 
   &.disabled.readonly>div.js-select>div.js-select_value.empty::after {
-    color: var(--r-color);
+    color: var(--r-color-light);
   }
 
   &[multi="1"]>div.js-select>div.js-select_value {
@@ -113,14 +113,14 @@ div.js-select_container {
 
       &.empty::after {
         content: attr(data-placeholder);
-        color: var(--p-color);
+        color: var(--p-color-light);
       }
 
       div.js-select_pill {
         display: flex;
         align-items: center;
         justify-content: center;
-        background-color: var(--o-active);
+        background-color: var(--o-active-light);
         color: inherit;
         padding: 0 10px;
         border-radius: 12px;
@@ -186,7 +186,7 @@ div.js-select_container {
         background-repeat: no-repeat;
         background-position: right .75rem center;
         background-size: 16px 12px;
-        border-bottom: 1px solid var(--o-active);
+        border-bottom: 1px solid var(--o-active-light);
       }
     }
 
@@ -211,7 +211,7 @@ div.js-select_container {
         &:focus,
         &.active,
         &[selected] {
-          background-color: var(--o-active);
+          background-color: var(--o-active-light);
           color: inherit;
         }
       }
@@ -283,6 +283,75 @@ div.js-select_container {
   }
 }
 
+div.js-select_container.light {
+  &.open {
+    background-image: #{$open-light};
+  }
+
+  &.close,
+  &.hover:hover:not(.readonly):not(.disabled) {
+    background-image: #{$close-light};
+  }
+
+  &.readonly>div.js-select>div.js-select_value.empty::after {
+    color: var(--r-color-light);
+  }
+
+  &.disabled {
+    background-color: var(--s-disabled-light);
+
+    &>div.js-select>div.js-select_value.empty::after {
+      color: var(--p-color-light);
+    }
+  }
+
+  &.disabled.readonly>div.js-select>div.js-select_value.empty::after {
+    color: var(--r-color-light);
+  }
+
+  >div.js-select>div.js-select_value.empty::after {
+    color: var(--p-color-light);
+  }
+
+  >div.js-select>div.js-select_value div.js-select_pill {
+    background-color: var(--o-active-light);
+
+    >div.js-select_pill_remove {
+      background-image: #{$clear-light};
+    }
+  }
+
+  >div.js-select+div.js-select_clear {
+    background-image: #{$clear-light};
+  }
+
+  >div.js-select+div.js-select_clear+div.js-select_dropdown {
+
+    >div.js-select_search_container>input.js-select_search {
+      background-image: #{$search-light};
+      border-bottom: 1px solid var(--o-active-light);
+    }
+
+    >div.js-select_search_container+div.js-select_options_container div.js-select_option {
+
+      &:hover,
+      &:focus,
+      &.active,
+      &[selected] {
+        background-color: var(--o-active-light);
+      }
+    }
+
+    &.loading {
+
+      >div.js-select_search_container+div.js-select_options_container+div.js-select_loading::after {
+        content: #{$loading-light};
+      }
+    }
+
+  }
+}
+
 div.js-select_container.dark {
   &.open {
     background-image: #{$open-dark};
@@ -294,27 +363,27 @@ div.js-select_container.dark {
   }
 
   &.readonly>div.js-select>div.js-select_value.empty::after {
-    color: var(--r-color-d);
+    color: var(--r-color-dark);
   }
 
   &.disabled {
-    background-color: var(--s-disabled-d);
+    background-color: var(--s-disabled-dark);
 
     &>div.js-select>div.js-select_value.empty::after {
-      color: var(--p-color-d);
+      color: var(--p-color-dark);
     }
   }
 
   &.disabled.readonly>div.js-select>div.js-select_value.empty::after {
-    color: var(--r-color-d);
+    color: var(--r-color-dark);
   }
 
   >div.js-select>div.js-select_value.empty::after {
-    color: var(--p-color-d);
+    color: var(--p-color-dark);
   }
 
   >div.js-select>div.js-select_value div.js-select_pill {
-    background-color: var(--o-active-d);
+    background-color: var(--o-active-dark);
 
     >div.js-select_pill_remove {
       background-image: #{$clear-dark};
@@ -329,7 +398,7 @@ div.js-select_container.dark {
 
     >div.js-select_search_container>input.js-select_search {
       background-image: #{$search-dark};
-      border-bottom: 1px solid var(--o-active-d);
+      border-bottom: 1px solid var(--o-active-dark);
     }
 
     >div.js-select_search_container+div.js-select_options_container div.js-select_option {
@@ -338,7 +407,7 @@ div.js-select_container.dark {
       &:focus,
       &.active,
       &[selected] {
-        background-color: var(--o-active-d);
+        background-color: var(--o-active-dark);
       }
     }
 
@@ -349,6 +418,78 @@ div.js-select_container.dark {
       }
     }
 
+  }
+}
+
+@media (prefers-color-scheme: dark) {
+
+  div.js-select_container {
+    &.open {
+      background-image: #{$open-dark};
+    }
+
+    &.close,
+    &.hover:hover:not(.readonly):not(.disabled) {
+      background-image: #{$close-dark};
+    }
+
+    &.readonly>div.js-select>div.js-select_value.empty::after {
+      color: var(--r-color-dark);
+    }
+
+    &.disabled {
+      background-color: var(--s-disabled-dark);
+
+      &>div.js-select>div.js-select_value.empty::after {
+        color: var(--p-color-dark);
+      }
+    }
+
+    &.disabled.readonly>div.js-select>div.js-select_value.empty::after {
+      color: var(--r-color-dark);
+    }
+
+    >div.js-select>div.js-select_value.empty::after {
+      color: var(--p-color-dark);
+    }
+
+    >div.js-select>div.js-select_value div.js-select_pill {
+      background-color: var(--o-active-dark);
+
+      >div.js-select_pill_remove {
+        background-image: #{$clear-dark};
+      }
+    }
+
+    >div.js-select+div.js-select_clear {
+      background-image: #{$clear-dark};
+    }
+
+    >div.js-select+div.js-select_clear+div.js-select_dropdown {
+
+      >div.js-select_search_container>input.js-select_search {
+        background-image: #{$search-dark};
+        border-bottom: 1px solid var(--o-active-dark);
+      }
+
+      >div.js-select_search_container+div.js-select_options_container div.js-select_option {
+
+        &:hover,
+        &:focus,
+        &.active,
+        &[selected] {
+          background-color: var(--o-active-dark);
+        }
+      }
+
+      &.loading {
+
+        >div.js-select_search_container+div.js-select_options_container+div.js-select_loading::after {
+          content: #{$loading-dark};
+        }
+      }
+
+    }
   }
 }
 
