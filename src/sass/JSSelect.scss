@@ -280,6 +280,17 @@ div.js-select_container {
         }
       }
     }
+
+    div.js-select_backdrop {
+      position: fixed;
+      top: 0;
+      left: 0;
+      height: 100vh;
+      width: 100vw;
+      background: none;
+      z-index: -1;
+    }
+
   }
 }
 

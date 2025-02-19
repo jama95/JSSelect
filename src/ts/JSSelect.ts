@@ -17,15 +17,13 @@ class Select {
   private readonly select: string;
   private readonly config: Configuration;
   private readonly options: Options;
-  private readonly lang: Lang;
   private custom: CustomSelect | null;
 
   constructor(sel: string, opt?: Options, lang?: Lang) {
     this.select = sel;
-    this.config = configuration;
+    this.config = { ...configuration };
     this.config.language = { ...language, ...lang };
     this.options = { ...options, ...opt };
-    this.lang = this.config.language;
     this.custom = null;
   }
 
@@ -96,17 +94,20 @@ class Select {
   init(): CustomSelect | null {
     if (!this.check()) return null;
     const target = document.getElementById(this.select) as HTMLSelectElement;
-    this.options.multiple = this.options.multiple ?? target.multiple;
+    const o = { ...this.options };
+    const c = { ...this.config };
+    o.multiple = o.multiple ?? target.multiple;
     target.style.display = "none";
     target.value = "";
     target.selectedIndex = -1;
-    const custom = customSelect(target, this.config, this.options);
-    setOptions(target, custom, this.config, this.options);
+    const custom = customSelect(target, c, o);
+    setOptions(target, custom, c, o);
     custom.dropdown.append(
       custom.search_container,
       custom.options_container,
       custom.info,
-      custom.loading
+      custom.loading,
+      custom.backdrop
     );
     custom.container.append(custom.select, custom.clear, custom.dropdown);
     target.insertAdjacentElement("afterend", custom.container);
@@ -298,14 +299,12 @@ class Select {
 /**
  * Creates a custom select element linked to a target select element.
  * @param {string} select Select element id.
- * @param {?Options} [options] Select options.
+ * @param {?Options} [opt] Select options.
  * @param {?Lang} [lang] Select language.
  * @returns {Select} Select instance.
  */
-export function JSSelect(
-  select: string,
-  options?: Options,
-  lang?: Lang
-): Select {
-  return new Select(select, options, lang);
+export function JSSelect(select: string, opt?: Options, lang?: Lang): Select {
+  return new Select(select, opt, lang);
 }
+
+export default JSSelect;

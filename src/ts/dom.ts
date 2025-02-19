@@ -52,6 +52,7 @@ function structure(
   container.setAttribute("tabindex", "0");
   const select = document.createElement("div");
   select.classList.add("js-select");
+  select.id = `js-select#${target.id}`;
   const value = document.createElement("div");
   value.classList.add("js-select_value", "empty");
   value.setAttribute(
@@ -69,8 +70,8 @@ function structure(
   search_container.classList.add("js-select_search_container");
   const input = document.createElement("input");
   input.setAttribute("type", "text");
-  input.id = `js-search_${target.id}`;
-  input.name = `js-search_${target.id}`;
+  input.id = `js-select-search#${target.id}`;
+  input.name = `js-select-search#${target.id}`;
   input.placeholder = config.language.searchPlaceholder;
   input.autocomplete = "off";
   if (options.inputClass.length > 0)
@@ -92,6 +93,9 @@ function structure(
   const loading = document.createElement("div");
   loading.classList.add("js-select_loading");
   loading.setAttribute("data-loading", config.language.loading);
+  const backdrop = document.createElement("div");
+  backdrop.classList.add("js-select_backdrop");
+  backdrop.setAttribute("target", `#${target.id}`);
   return {
     container: container,
     select: select,
@@ -104,6 +108,7 @@ function structure(
     options_container: options_container,
     info: info,
     loading: loading,
+    backdrop: backdrop,
   };
 }
 
@@ -121,14 +126,9 @@ function customSelectEvents(
   config: Configuration,
   options: Options
 ): CustomSelect {
-  /** Close the JSSelect dropdown on blur */
-  document.addEventListener("click", function (e) {
-    const target = e.target as HTMLElement;
-    const classes = Array.from(target.classList).join(" ");
-    if (
-      classes.indexOf("js-select") < 0 &&
-      custom.container.classList.contains("close")
-    ) {
+  // /** Close the JSSelect dropdown on blur */
+  custom.backdrop.addEventListener("click", function (e) {
+    if (custom.container.classList.contains("close")) {
       custom.container.classList.add("open");
       custom.container.classList.remove("close");
       custom.input.value = "";
@@ -140,7 +140,6 @@ function customSelectEvents(
   /** Open the JSSelect dropdown by pressing the "Enter" key when it has the focus */
   custom.container.onkeydown = (e) => {
     if (custom.container.classList.contains("open")) {
-      e.preventDefault();
       if (e.key == "Enter") {
         e.preventDefault();
         custom.select.click();
@@ -155,9 +154,8 @@ function customSelectEvents(
     custom.container.classList.toggle("open");
     custom.container.classList.toggle("close");
     if (custom.container.classList.contains("close")) {
+      custom.container.blur();
       custom.input.value = "";
-      custom.input.dispatchEvent(new Event("input"));
-      custom.input.focus();
       custom.options_container.setAttribute("current_focus", "-1");
     }
   };
@@ -227,6 +225,7 @@ function customSelectEvents(
     options_container: custom.options_container,
     info: custom.info,
     loading: custom.loading,
+    backdrop: custom.backdrop,
   };
 }
 

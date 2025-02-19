@@ -162,6 +162,8 @@ export type CustomSelect = {
   info: HTMLDivElement;
   /** The loading data element */
   loading: HTMLDivElement;
+  /** The backdrop element */
+  backdrop: HTMLDivElement;
 };
 
 export type GroupAddedCallback = (
