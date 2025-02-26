@@ -1,13 +1,7 @@
 {
-  "include": [
-    "src/ts/*.ts"
-  ],
+  "include": ["./dist/JSSelect.ts"],
   "compilerOptions": {
-    "strict": true,
-    "forceConsistentCasingInFileNames": true,
     "emitDeclarationOnly": true,
-    "declaration": true,
-    "declarationMap": true,
-    "outFile": "./dist/js/JSSelect.js"
+    "declaration": true
   }
 }
