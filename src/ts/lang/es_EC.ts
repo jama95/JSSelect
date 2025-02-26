@@ -1,6 +1,6 @@
 import { iso3166, Lang } from "../types";
 
-const es_ec: Lang = {
+export const es_ec: Lang = {
   locale: "es-EC",
   empty: "No hay opciones disponibles.",
   placeholderS: "Seleccione una opción.",
@@ -13,7 +13,7 @@ const es_ec: Lang = {
   info: "Opciones:{o}(&nbsp;&nbsp;Grupos:{g})",
 };
 
-const world_es: iso3166[] = [
+export const world_es: iso3166[] = [
   {
     CTname: "Afghanistan",
     Capital: "Kabul",
