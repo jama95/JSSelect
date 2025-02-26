@@ -9,6 +9,54 @@ const postcss = require("gulp-postcss");
 const browserSync = require("browser-sync").create();
 const gulpModifier = require("gulp-modifier");
 const concat = require("gulp-concat-process");
+const ts = require("gulp-typescript");
+
+function all() {
+  return gulp
+    .src(["./src/ts/*.ts", "./src/ts/lang/*.ts"])
+    .pipe(sourcemaps.init())
+    .pipe(
+      concat("JSSelect.ts", function (contents, file) {
+        let newContents = contents
+          .toString()
+          .replace(
+            /import (type )?{([0-9a-z_, \n])+} from "[0-9a-z_./]+";/gi,
+            "\n"
+          );
+        if (!file.path.includes("lang")) {
+          newContents = newContents
+            .replace(/export /g, "")
+            .replace(/default /g, "export default ")
+            .replace(/function JSSelect/, "export function JSSelect");
+        }
+        return (
+          `\n//#region ${file.stem}\n` +
+          newContents +
+          `\n//#endregion ${file.stem}\n`
+        )
+          .replace(/\n{2,}/, "\n")
+          .replace(/\n{2,}/, "\n");
+      })
+    )
+    .pipe(sourcemaps.write("."))
+    .pipe(gulp.dest("./dist"));
+}
+
+function types() {
+  const tsProject = ts.createProject("tsconfig.json");
+  return gulp
+    .src("./dist/JSSelect.ts")
+    .pipe(tsProject())
+    .pipe(
+      gulpModifier(function (contents, path) {
+        let newContents = contents
+          .replace('declare module "all"', 'declare module "JSSelect"')
+          .replace(/export const [\s\S]+;/, "");
+        return newContents.trim();
+      })
+    )
+    .pipe(gulp.dest("./dist/js"));
+}
 
 function buildJS() {
   return gulp
@@ -19,37 +67,30 @@ function buildJS() {
       "./src/ts/JSSelect.ts",
     ])
     .pipe(
-      concat("all.ts", function (contents, file) {
-        let newContents =
-          `//#region ${file.stem}\n` +
-          contents
-            .toString()
-            .replace(
-              /import (type )?{([0-9a-z_, \n])+} from "[0-9a-z_./]+";/gi,
-              "\n"
-            )
-            .replace(/export default JSSelect;/, "")
-            .replace(/export /g, "")
-            .replace(/function JSSelect/, "export function JSSelect") +
-          `//#endregion ${file.stem}\n`;
-        return newContents.replace(/\n{3,}/, "\n").replace(/\n{3,}/, "\n");
+      concat("JSSelect.ts", function (contents, file) {
+        let newContents = contents
+          .toString()
+          .replace(
+            /import (type )?{([0-9a-z_, \n])+} from "[0-9a-z_./]+";/gi,
+            "\n"
+          )
+          .replace(/export default JSSelect;/, "")
+          .replace(/export /g, "")
+          .replace(/function JSSelect/, "export function JSSelect");
+        return (
+          `\n//#region ${file.stem}\n` +
+          newContents +
+          `\n//#endregion ${file.stem}\n`
+        )
+          .replace(/\n{2,}/, "\n")
+          .replace(/\n{2,}/, "\n");
       })
     )
     .pipe(sourcemaps.init())
     .pipe(
       babel({
         presets: ["@babel/preset-env", "@babel/preset-typescript"],
-        plugins: [
-          [
-            "@babel/plugin-transform-modules-umd",
-            {
-              globals: {
-                all: "JSSelect",
-              },
-              exactGlobals: true,
-            },
-          ],
-        ],
+        plugins: [["@babel/plugin-transform-modules-umd"]],
       })
     )
     .pipe(
@@ -61,7 +102,6 @@ function buildJS() {
         return newContents.trim();
       })
     )
-    .pipe(rename({ basename: "JSSelect" }))
     .pipe(sourcemaps.write("."))
     .pipe(gulp.dest("./dist/js"));
 }
@@ -163,12 +203,10 @@ function watch() {
 }
 
 gulp.task(
-  "default",
+  "build",
   gulp.parallel(
-    gulp.series(buildJS, miniJS, buildLocales, miniLocales),
+    gulp.series(all, types, buildJS, miniJS, buildLocales, miniLocales),
     gulp.series(buildCSS, postCSS, miniCSS)
   )
 );
 gulp.task("dev", gulp.parallel(watch, server));
-gulp.task("css", gulp.series(buildCSS, postCSS, miniCSS));
-gulp.task("js", gulp.series(buildJS, miniJS, buildLocales, miniLocales));
