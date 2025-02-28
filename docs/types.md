@@ -122,7 +122,7 @@ Function triggered after the selected option is cleared.
 ### `optionClearedCallback`
 
 Function triggered after an option is cleared in a multiple select.
-**Accepts:** [`OptionClearedCallback`](#option-added-callback) | `undefined`
+**Accepts:** [`OptionClearedCallback`](#option-cleared-callback) | `undefined`
 **Default Value:** `undefined`
 
 ### `searchCallback`
